@@ -1,0 +1,8 @@
+This for reference only.
+
+Contract that I tested on-
+Stake Token: 0x0CbA48Eff2042bdd69F395294EF840F35883c036
+Reward Token: 0x947c3E51981b9Ad3fB4b7a85aA14Da6141B56984
+Staking Contract: 0x4b3c73e45a826F8E51F730f4D5DBFCC26aF3cB80
+
+
