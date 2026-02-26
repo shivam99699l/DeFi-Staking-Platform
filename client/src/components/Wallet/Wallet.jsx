@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import { connectWallet } from "../../utils/connectWallet";
 import Web3Context from "../../context/Web3Context";
-import Button from "../Button/Button";
+import WalletHandlerContext from "../../context/WalletHandlerContext";
 import { handleAccountChange } from "../../utils/handleAccountChange";
 import { handleChainChange } from "../../utils/handleChainChange";
 import { toast } from "react-hot-toast";
@@ -27,23 +27,36 @@ const Wallet =({children})=>{
    }
 },[])
  const handleWallet = async()=>{
-    try{
-        setIsLoading(true);
-        const { provider,selectedAccount,stakingContract,stakeTokenContract,chainId} = await connectWallet();
-        setState({provider,selectedAccount,stakingContract,stakeTokenContract,chainId})
-
-    }catch(error){
-       toast.error("Error connecting wallet")
-       console.error(error.message)
-    }finally{
-        setIsLoading(false)
+  try{
+    setIsLoading(true);
+    const { provider,selectedAccount,stakingContract,stakeTokenContract,chainId} = await connectWallet();
+    const prevAccount = state.selectedAccount || state.account;
+    if(!selectedAccount){
+      toast.error("Failed to connect wallet");
+      return;
     }
+    if(prevAccount && prevAccount.toLowerCase() === selectedAccount.toLowerCase()){
+      setState(prev=>({...prev,provider,selectedAccount,stakingContract,stakeTokenContract,chainId}));
+      toast("Already connected");
+    } else {
+      setState({provider,selectedAccount,stakingContract,stakeTokenContract,chainId});
+      toast.success("Wallet connected");
+    }
+
+  }catch(error){
+     toast.error("Failed to connect wallet")
+     console.error(error.message)
+  }finally{
+    setIsLoading(false)
+  }
  }
  return (
    <div className="Connect-Wallet">
-     <Web3Context.Provider value={state}>{children}</Web3Context.Provider>
-     {isLoading && <p>Loading...</p>}
-     <Button onClick={handleWallet} type="button" label="Connect Wallet" />
+     <Web3Context.Provider value={state}>
+       <WalletHandlerContext.Provider value={{handleWallet, isLoading}}>
+         {children}
+       </WalletHandlerContext.Provider>
+     </Web3Context.Provider>
    </div>
  )
 }
