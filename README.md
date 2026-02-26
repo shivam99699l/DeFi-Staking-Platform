@@ -1,4 +1,4 @@
-# Staking Dapp Shivam Babu
+# Staking Dapp
 
 This repository contains a simple Web3 staking decentralized application (DApp) built with a React frontend (Vite) and Solidity smart contracts. The DApp allows users to approve a stake token, stake tokens into a staking contract, earn rewards in a reward token, claim those rewards, and withdraw staked tokens.
 
@@ -81,4 +81,5 @@ The dev server will start via Vite and typically be available at `http://localho
 - If you redeploy contracts and want the frontend to point to new addresses, update the addresses in the frontend context files.
 
 ---
+
 ##
